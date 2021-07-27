@@ -168,8 +168,12 @@ void generateBill(){
 void main(){
 
 int choice = 99;
+int menuItems;
 printf("\t\tCreate Menu \n");
-for(int i = 0; i < 3; i++){
+printf("Enter the Number Of Items You want to add in Your Menu: ");
+scanf("%d",&menuItems);
+
+for(int i = 0; i < menuItems; i++){
   printf(" \t\tItem %d\n",i+1);
     menu[i].id = i;
     printf("\nEnter Item Name: ");
