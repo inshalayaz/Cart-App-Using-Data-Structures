@@ -1,4 +1,67 @@
 #include<stdlib.h>
+// Linked List For Order History 
+
+struct Node{
+  int id;
+  int total;
+  struct Node *next;
+};
+struct Node *head =NULL;
+
+void createNode(int id,int total ){
+struct Node *temp,*temp2;
+    
+    temp = (struct Node *)malloc(sizeof(struct Node));
+    
+    // temp->data = value;
+    temp->id = id;
+    temp->total = total;
+    temp->next = NULL;
+    
+    if(head == NULL){
+        head = temp;
+    }else{
+        temp2 = head;
+        head = temp;
+        head->next = temp2;
+    }
+
+
+}
+
+int totalSells = 0;
+
+void totalSellsMade(){
+    if(head == NULL){
+        printf("No Sales Made today");
+    }else{
+        struct Node *curr = head;
+        while(curr != NULL){
+            totalSells += curr->total;
+            curr = curr ->next;
+        }
+        printf("Total Sales Made Today: $%d", totalSells);
+    }
+}
+void printOrderHistory(){
+    if(head == NULL){
+        printf("The List is empty");
+    }else{
+        struct Node *curr = head;
+        while(curr != NULL){
+            printf("\nReciept Number: %d Total Bill Was %d \n", curr->id, curr->total);
+            curr = curr ->next;
+        }
+    }
+}
+
+
+
+
+
+
+
+
 
 struct Food{
     int id;
@@ -84,6 +147,7 @@ void newPop(){
     free(temp);
 }
 }
+int orderId = 0;
 void generateBill(){
     if(top == NULL){
         printf("Your Cart is Empty");
@@ -94,22 +158,25 @@ void generateBill(){
             newPop();
             curr = curr ->next;
         }
-        printf("\t\t---------------Your Total Bill is $%d-----------------", sum);
-      
+        orderId += 1;
+        printf("\t\t---------------Your Total Bill is $%d And Your Receipt Number is %d -----------------", sum, orderId);
+        createNode(orderId, sum);
+        sum = 0;
     }
 }
 
 void main(){
 
 int choice = 99;
-printf("\t\tCreate Menu ");
+printf("\t\tCreate Menu \n");
 for(int i = 0; i < 3; i++){
-  printf("%d Item \n",i+1);
+  printf(" \t\tItem %d\n",i+1);
     menu[i].id = i;
     printf("\nEnter Item Name: ");
     scanf("%s", &menu[i].name);
-    printf("\nEnter Item Price:$ ");
+    printf("\nEnter Item Price: $");
     scanf("%d", &menu[i].price);
+    printf("\n");
     
 };
 
@@ -125,12 +192,16 @@ while(choice != -1){
     printf("Press : %d to Buy this \n", menu[i].id);
     printf("\n");
   };
-  printf("Select What you want to buy: (-1 to exit)\n Enter 10 to remove last added item \n Press 11 to view your cart\n Press 12 to confirm your order and generate Bill\n");
+  printf("Select What you want to buy: (-1 to exit)\n Enter 10 to remove last added item \n Press 11 to view your cart\n Press 12 to confirm your order and generate Bill\nPress 13 to Print Order History\n");
+  printf("Select what task to perform: ");
   scanf("%d", &choice);
   if(choice == 0){
     push(menu[choice].id,menu[choice].price);
     printf("-----------%s Is added to your cart----------", menu[choice].name);
-  } 
+  }else if(choice == -1){
+    printf("--------Thank You For Using My Program-------\n");
+    totalSellsMade();
+  }
   else if(choice == 1){
     push(menu[choice].id,menu[choice].price);
     printf("------------%s Is added to your cart----------", menu[choice].name);
@@ -149,7 +220,9 @@ while(choice != -1){
   }else if(choice == 12){
     printNodes(); 
     generateBill();
-    break;
+    //break;
+  }else if(choice == 13){
+    printOrderHistory();
   }
 }
 
